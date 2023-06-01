@@ -17,7 +17,7 @@ const App: FC = (): JSX.Element => {
   return (
     <CardsContext.Provider value={{ cards, setCards }}>
       <CartContext.Provider value={{ cartList, setCartList }}>
-        <Router>
+        <Router basename="/delivery">
           <Suspense fallback={<Loader />}>
             <Routes>
               <Route path={RoutesPages.MAIN} element={<Main />} />
