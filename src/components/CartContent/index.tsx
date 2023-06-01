@@ -1,4 +1,4 @@
-import { FC, useContext, useState, useEffect } from "react";
+import React, { FC, useContext, useState, useEffect } from "react";
 
 import {
   SectionContainer,
@@ -14,12 +14,20 @@ import {
   TotalContainter,
   TotalPrice,
   TotalTitle,
+  CartActions,
+  ButtonsContainer,
+  ActionButton,
+  MaskCount,
+  ItemMask,
 } from "./styles";
 import { CartContext } from "../Context";
+import { useHover } from "../../helpers";
 
 const CartContent: FC = (): JSX.Element => {
-  const { cartList } = useContext(CartContext);
   const [total, setTotal] = useState<number>(0);
+  const { cartList, setCartList } = useContext(CartContext);
+
+  const [isHovered, eventHandlers, hoveredCard] = useHover();
 
   useEffect(() => {
     getTotalPrice();
@@ -31,12 +39,59 @@ const CartContent: FC = (): JSX.Element => {
     cartList.forEach((el) => {
       if (+el.price.substring(1).slice(0, -3).replaceAll(",", "") >= 1000) {
         return (counter =
-          counter + +el.price.substring(1).slice(0, -3).replaceAll(",", ""));
+          counter +
+          +el.price.substring(1).slice(0, -3).replaceAll(",", "") * el.count);
       } else {
-        return (counter = counter + +el.price.substring(1));
+        return (counter = counter + +el.price.substring(1) * el.count);
       }
     });
     setTotal(counter);
+  };
+
+  const onAddItem = (target: any) => {
+    console.log(target);
+    console.log(target instanceof Object);
+    const filterCart = cartList.filter((el) => {
+      return (
+        el.title ===
+        target.parentElement.parentElement.parentElement.lastElementChild.alt
+      );
+    })[0];
+    const updateOrder = {
+      ...filterCart,
+      count: filterCart.count + 1,
+    };
+    setCartList([
+      ...cartList.map((el) => {
+        return el === filterCart ? (el = updateOrder) : el;
+      }),
+    ]);
+  };
+
+  const onRemoveItem = (target: any) => {
+    const filterCart = cartList.filter((el) => {
+      if (target !== null) {
+        return (
+          el.title ===
+          target?.parentElement?.parentElement?.parentElement?.lastElementChild
+            ?.alt
+        );
+      }
+    })[0];
+
+    const updateOrder = {
+      ...filterCart,
+      count: filterCart.count - 1,
+    };
+
+    if (updateOrder.count === 0) {
+      return setCartList([...cartList.filter((el) => el !== filterCart)]);
+    }
+    setCartList([
+      ...cartList.map((el) => {
+        return el === filterCart ? (el = updateOrder) : el;
+      }),
+    ]);
   };
 
   return (
@@ -46,13 +101,36 @@ const CartContent: FC = (): JSX.Element => {
         {cartList.length > 0 ? (
           <>
             <ItemsContainer>
-              {cartList.map(({ title, img, price }, i) => {
+              {cartList.map(({ title, img, count, price }, i) => {
                 return (
                   <ItemInner key={i}>
-                    <ItemsImg src={img} alt={title} />
+                    <ItemMask {...eventHandlers}>
+                      {isHovered && hoveredCard.current?.alt === title ? (
+                        <CartActions>
+                          <MaskCount>{count}</MaskCount>
+                          <ButtonsContainer>
+                            <ActionButton
+                              className="action-btn"
+                              onClick={(e) => onAddItem(e.target)}
+                            >
+                              +
+                            </ActionButton>
+                            <ActionButton
+                              className="action-btn"
+                              onClick={(e) => onRemoveItem(e.target)}
+                            >
+                              -
+                            </ActionButton>
+                          </ButtonsContainer>
+                        </CartActions>
+                      ) : null}
+                      <ItemsImg src={img} alt={title} />
+                    </ItemMask>
                     <ItemText>
                       <ItemTitle>{title}</ItemTitle>
-                      <ItemCount>{price}</ItemCount>
+                      <ItemCount>
+                        {count} x {price}
+                      </ItemCount>
                     </ItemText>
                   </ItemInner>
                 );

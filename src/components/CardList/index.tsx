@@ -10,16 +10,14 @@ import {
   CardTextContainer,
   CardTitle,
   StyledMasonry,
-  BtnAdd,
 } from "./styles";
-import { CardsContext, CartContext } from "../Context";
+import { CardsContext } from "../Context";
 import { ProductsList } from "../Constants/types";
 
 const CardList: FC = (): JSX.Element => {
   const [cardList, setCardList] = useState<ProductsList[]>([]);
   const { cardId } = useParams<{ cardId: string }>();
   const { cards } = useContext(CardsContext);
-  const { cartList, setCartList } = useContext(CartContext);
 
   useEffect(() => {
     if (cardId !== undefined) {
@@ -32,24 +30,18 @@ const CardList: FC = (): JSX.Element => {
     }
   }, [cardId, cards]);
 
-  const onAdd = (id: number) => {
-    const getCardInfo = cardList.filter((el) => el.id === id)[0];
-    setCartList([...cartList, getCardInfo]);
-  };
-
   return (
     <SectionContainer>
       <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
         <StyledMasonry>
           {cardList.map(({ id, price, title, img }) => {
             return (
-              <Card key={id}>
+              <Card key={id} to={`../../cards/${id}`}>
                 <CardImg src={img} alt={title} />
                 <CardTextContainer>
                   <CardTitle>{title}</CardTitle>
                   <CardPrice>{price}</CardPrice>
                 </CardTextContainer>
-                <BtnAdd onClick={() => onAdd(id)}>Add to cart</BtnAdd>
               </Card>
             );
           })}

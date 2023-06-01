@@ -62,7 +62,7 @@ export const ItemInner = styled.div`
 `;
 
 export const ItemsImg = styled.img`
-  max-width: 25%;
+  max-width: 100%;
   max-height: 100%;
   object-fit: cover;
 `;
@@ -109,4 +109,60 @@ export const TotalPrice = styled.h4`
   font-size: 18px;
   color: #4d4d4d;
   font-weight: 500;
+`;
+
+export const ItemMask = styled.div`
+  position: relative;
+  transition: all 0.25s linear;
+  height: 100%;
+`;
+
+export const MaskCount = styled.h4`
+  width: 70px;
+  height: 70px;
+  font-size: 30px;
+  line-height: 70px;
+  color: #ccc;
+  text-align: center;
+  cursor: default;
+`;
+
+export const CartActions = styled.div`
+  background-color: none;
+  width: 100%;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  position: absolute;
+  transition: all 0.25s linear;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.75);
+  }
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+`;
+
+export const ActionButton = styled.button`
+  font-weight: 400;
+  font-size: 28px;
+  text-transform: uppercase;
+  padding: 12px;
+  color: #393939;
+  background: rgb(204, 204, 204);
+  text-decoration: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover::after {
+    opacity: 1;
+  }
 `;

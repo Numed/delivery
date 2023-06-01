@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Masonry from "react-responsive-masonry";
+import { Link } from "react-router-dom";
 
 export const SectionContainer = styled.section`
   margin: 40px 0;
@@ -13,11 +14,12 @@ export const StyledMasonry = styled(Masonry)`
   }
 `;
 
-export const Card = styled.div`
+export const Card = styled(Link)`
   width: 100%;
   height: 100%;
   padding: 0 20px 20px 20px;
   background: #fff;
+  text-decoration: none;
 `;
 
 export const CardImg = styled.img`
@@ -53,25 +55,4 @@ export const CardPrice = styled.span`
   font-size: 16px;
   line-height: 18px;
   color: #6f6f6f;
-`;
-
-export const BtnAdd = styled.button`
-  font-family: "Karla";
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-  letter-spacing: 1.4px;
-  background: #393939;
-  border: 1px solid #393939;
-  border-radius: 3px;
-  color: #ffffff;
-  padding: 12px 22px;
-  cursor: pointer;
-  margin-top: 15px;
-  opacity: 0.8;
-  transition: all 0.2s linear;
-
-  &:hover {
-    opacity: 1;
-  }
 `;

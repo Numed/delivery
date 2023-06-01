@@ -10,6 +10,7 @@ import { ProductsList, CartType } from "../Constants/types";
 const Main = lazy(() => import("../../pages/MainPage"));
 const Cart = lazy(() => import("../../pages/CartPage"));
 const ListOfCards = lazy(() => import("../../pages/CartListPage"));
+const SinglePageCard = lazy(() => import("../../pages/SingleCardPage"));
 
 const App: FC = (): JSX.Element => {
   const [cards, setCards] = useState<ProductsList[]>(productsList);
@@ -23,6 +24,10 @@ const App: FC = (): JSX.Element => {
               <Route path={RoutesPages.MAIN} element={<Main />} />
               <Route path={RoutesPages.CART} element={<Cart />} />
               <Route path={RoutesPages.LIST} element={<ListOfCards />} />
+              <Route
+                path={RoutesPages.SINGLEPAGE}
+                element={<SinglePageCard />}
+              />
             </Routes>
           </Suspense>
         </Router>
